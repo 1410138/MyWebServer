@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<head>
+     <meta charset="UTF-8">
+     <title>登录</title>
+</head>
+<body>
+     <h1 class="homepage">MyWebServer</h1>  
+     <ul>
+          <li><a href="/">主页</a></li>
+          <li><a href="/picture">图片</a></li>
+          <li><a href="/video">视频</a></li>
+          <li><a href="/login">登录</a></li>
+          <li><a href="/register">注册</a></li>
+     </ul>
+    
+     <form action="login" method="post">
+          <input type="text" name="username" placeholder="用户名" required="required"><br>
+          <input type="password" name="password" placeholder="密码" required="required"><br>
+          <button type="submit">登录</button>
+          <div style="color:#f71515">
+               <span>用户名或密码有误!</span>
+          </div>
+     </form>
+</body>
+</html>
+
