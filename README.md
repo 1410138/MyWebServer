@@ -13,6 +13,9 @@ C++ Linux Web服务器
 - 使用**mmap内存映射**方法，提高服务器从磁盘中读取响应文件的速度
 - 开启**SO_LINGER**套接字选项，实现close函数的延时返回，确保对端已确认全部数据
 
+## 原理图
+[![Reactor11e8ae0507415d5a.md.png](https://img.picgo.net/2023/01/12/Reactor11e8ae0507415d5a.md.png)](https://www.picgo.net/image/857Ij)
+
 ## 测试环境
 - CentOS 7
 - MySQL 5.7
@@ -57,3 +60,5 @@ make
 - [同步+异步日志系统（C++实现）](https://blog.csdn.net/weixin_50437588/article/details/128511229?spm=1001.2014.3001.5502)
 - [数据库连接池（C++11实现）](https://blog.csdn.net/weixin_50437588/article/details/128513581?spm=1001.2014.3001.5502)
 - [解析HTTP请求报文（GET、POST）](https://blog.csdn.net/weixin_50437588/article/details/128570178?spm=1001.2014.3001.5502)
+- [生成HTTP响应报文](https://blog.csdn.net/weixin_50437588/article/details/128663171?spm=1001.2014.3001.5501)
+- [HTTP连接（读取请求+解析请求+生成响应+回送响应）](https://blog.csdn.net/weixin_50437588/article/details/128664609?spm=1001.2014.3001.5501)
