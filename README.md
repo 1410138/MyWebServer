@@ -39,6 +39,11 @@ make
 ```
 打开浏览器，网址栏输入http://本机IP:8888 ，进入Web服务器主页
 
+## 运行结果
+[![e8862dcae57c337514ca7440db1c5bd331a497b09f8bac5e.jpeg](https://img.picgo.net/2023/01/12/e8862dcae57c337514ca7440db1c5bd331a497b09f8bac5e.jpeg)](https://www.picgo.net/image/%E4%B8%BB%E9%A1%B5.8wdJC)
+
+如图，拥有展示主页、获取图片与视频以及注册和登录的功能
+
 ## 压力测试
 [![1e330e41f3d8af56825c61bc9c3adba55b7c4864a06763bc.jpeg](https://img.picgo.net/2023/01/12/1e330e41f3d8af56825c61bc9c3adba55b7c4864a06763bc.jpeg)](https://www.picgo.net/image/%E5%8E%8B%E5%8A%9B%E6%B5%8B%E8%AF%95.8GK24)
 
