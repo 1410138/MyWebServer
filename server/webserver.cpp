@@ -1,6 +1,6 @@
 #include "webserver.h"
-
-bool WebServer::loadConfigFile()
+ 
+bool WebServer::loadConfigFile()//加载配置文件
 {
     FILE* fp = fopen("./webserver.ini", "r");
     if(fp==nullptr)
@@ -9,7 +9,7 @@ bool WebServer::loadConfigFile()
     }    
     while(!feof(fp)) 
     {
-    	char line[1024] = {0};
+        char line[1024] = {0};
         fgets(line, 1024, fp);
         string str = line;
         int idx = str.find('=', 0);
@@ -32,7 +32,7 @@ bool WebServer::loadConfigFile()
     fclose(fp);
     return true;
 }
-
+ 
 WebServer::WebServer():isClose(false),timer_p(new HeapTimer()),epoller_p(new Epoller())
 {
     if (!loadConfigFile())//配置失败
@@ -54,14 +54,14 @@ WebServer::WebServer():isClose(false),timer_p(new HeapTimer()),epoller_p(new Epo
     else
         LOG_INFO("%s", "========== Server init success!========");
 }
-
+ 
 WebServer::~WebServer()
 {
     close(listenFd);
     isClose=true;
     free(srcDir);
 }
-
+ 
 void WebServer::start() 
 {
     int timeMs=-1;
@@ -82,15 +82,15 @@ void WebServer::start()
             }
             else if(events&EPOLLIN)
             {
-                dealRead(&users[fd]);
+                dealRead(users[fd]);
             }
             else if(events&EPOLLOUT)
             {
-                dealWrite(&users[fd]);
+                dealWrite(users[fd]);
             }
             else if(events&(EPOLLRDHUP|EPOLLHUP|EPOLLERR))
             {
-                closeConn(&users[fd]);
+                closeConn(users[fd]);
             }
             else
             {
@@ -100,7 +100,7 @@ void WebServer::start()
     }
     
 }
-
+ 
 void WebServer::dealListen()
 {
     struct sockaddr_in addr;
@@ -124,25 +124,25 @@ void WebServer::dealListen()
         }
     }
 }
-
+ 
  void WebServer::dealRead(HttpConn* client)
  {
     flushTime(client);
     threadPool_p->addTask(std::bind(&WebServer::readFrom,this,client));
  }
-
+ 
 void WebServer::dealWrite(HttpConn* client)
 {
     flushTime(client);
     threadPool_p->addTask(std::bind(&WebServer::writeTo,this,client));
 }
-
+ 
 void WebServer::closeConn(HttpConn* client)
 {
     epoller_p->delFd(client->getFd());
     client->closeConn();
 }
-
+ 
 void WebServer::flushTime(HttpConn* client)
 {
     if(timeOutMs>0)
@@ -150,18 +150,19 @@ void WebServer::flushTime(HttpConn* client)
         timer_p->adjust(client->getFd(),timeOutMs);
     }
 }
-
+ 
 void WebServer::addClient(int connfd,const sockaddr_in& addr)
 {
-    users[connfd].init(connfd,addr);
+    users[connfd]=new HttpConn();
+    users[connfd]->init(connfd,addr);
     if(timeOutMs>0)
     {
-        timer_p->add(connfd,timeOutMs,std::bind(&WebServer::closeConn,this,&users[connfd]));
+        timer_p->add(connfd,timeOutMs,std::bind(&WebServer::closeConn,this,users[connfd]));
     }
     epoller_p->addFd(connfd,connEvent|EPOLLIN);
     setFdNonblock(connfd);
 }
-
+ 
 void WebServer::readFrom(HttpConn* client)
 {
     int readErrno=0;
@@ -173,7 +174,7 @@ void WebServer::readFrom(HttpConn* client)
     }
     process(client);
 }
-
+ 
 void WebServer::writeTo(HttpConn* client)
 {
     int writeErrno=0;
@@ -193,7 +194,7 @@ void WebServer::writeTo(HttpConn* client)
     }
     closeConn(client);
 }
-
+ 
 void WebServer::process(HttpConn* client)
 {
     if(client->process()) 
@@ -205,7 +206,7 @@ void WebServer::process(HttpConn* client)
         epoller_p->modFd(client->getFd(), connEvent | EPOLLIN);
     }
 }
-
+ 
 bool WebServer::setFdNonblock(int fd)
 {
     int flags;
@@ -216,7 +217,7 @@ bool WebServer::setFdNonblock(int fd)
         return false;
     return true;
 }
-
+ 
 bool WebServer::initSocket()
 {
     if(port>65535||port<1024)
