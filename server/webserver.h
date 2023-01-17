@@ -15,6 +15,7 @@
 #include "../pool/sqlconnpool.h"
 #include "../http/httpconn.h"
 #include "../log/log.h"
+typedef std::shared_ptr<HttpConn> HttpConn_ptr;
  
 class  WebServer
 {
@@ -26,15 +27,15 @@ public:
  
 private:
     void dealListen();
-    void dealRead(HttpConn* client);
-    void dealWrite(HttpConn* client);
-    void closeConn(HttpConn* client);
+    void dealRead(HttpConn_ptr client);
+    void dealWrite(HttpConn_ptr client);
+    void closeConn(HttpConn_ptr client);
  
-    void flushTime(HttpConn* client);
+    void flushTime(HttpConn_ptr client);
     void addClient(int fd,const sockaddr_in& addr);
-    void readFrom(HttpConn* client);
-    void writeTo(HttpConn* client);
-    void process(HttpConn* client);
+    void readFrom(HttpConn_ptr client);
+    void writeTo(HttpConn_ptr client);
+    void process(HttpConn_ptr client);
  
     bool setFdNonblock(int fd);
     bool initSocket();
@@ -50,7 +51,7 @@ private:
     std::unique_ptr<HeapTimer> timer_p;
     std::unique_ptr<ThreadPool> threadPool_p;
     std::unique_ptr<Epoller> epoller_p;
-    std::unordered_map<int,HttpConn*> users;
+    std::unordered_map<int,HttpConn_ptr> users;
     const int maxUserNum = 65536;
 };
  
