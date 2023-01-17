@@ -48,9 +48,9 @@ make
 如图，拥有展示主页、获取图片与视频以及注册和登录的功能
 
 ## 压力测试
-[![1e330e41f3d8af56825c61bc9c3adba55b7c4864a06763bc.jpeg](https://img.picgo.net/2023/01/12/1e330e41f3d8af56825c61bc9c3adba55b7c4864a06763bc.jpeg)](https://www.picgo.net/image/%E5%8E%8B%E5%8A%9B%E6%B5%8B%E8%AF%95.8GK24)
+[![-2023-01-17-170311af8b5787cf32f536.md.jpeg](https://img.picgo.net/2023/01/17/-2023-01-17-170311af8b5787cf32f536.md.jpeg)](https://www.picgo.net/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-2023-01-17-170311.ddUSY)
 
-1000个客户端并发访问网站30s，每分钟响应请求数：28416 pages/min ,每秒钟传输数据量 281823 bytes/sec，并发1000运行30秒后产生的TCP连接14208个，46failed.
+1000个客户端并发访问网站30s，每分钟响应请求数：183350 pages/min ,每秒钟传输数据量 1824332 bytes/sec，并发1000运行30秒后产生的TCP连接91675个，0 failed.
 
 ## 实现细节
 - [基于C++11实现的阻塞队列(BlockQueue)](https://blog.csdn.net/weixin_50437588/article/details/128434180?spm=1001.2014.3001.5502)
