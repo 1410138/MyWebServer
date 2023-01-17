@@ -147,6 +147,7 @@ void Log::writeLog(int level, const char* format, ...)
     
     if(isAsync&&deque&&!deque->full())//异步方式（加入阻塞队列中，等待写线程读取日志信息）
     {
+        std::lock_guard<std::mutex> lock(mtx);
         deque->push_back(buff.retrieveAllAsString());
     }
     else//同步方式（直接向文件中写入日志信息）
