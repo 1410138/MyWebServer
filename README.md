@@ -50,7 +50,7 @@ make
 ## 压力测试
 [![22ce1cd158fc233d4f63edf21a963fac5353692dc022aa35.md.jpeg](https://img.picgo.net/2023/01/17/22ce1cd158fc233d4f63edf21a963fac5353692dc022aa35.md.jpeg)](https://www.picgo.net/image/%E5%8E%8B%E5%8A%9B%E6%B5%8B%E8%AF%95.dGhIA)
 
-1000个客户端并发访问网站30s，每分钟响应请求数：183350 pages/min ,每秒钟传输数据量 1824332 bytes/sec，并发1000运行30秒后产生的TCP连接91675个，0 failed.
+1000个客户端并发访问网站30s，每分钟响应请求数：200490 pages/min ,每秒钟传输数据量 1994855 bytes/sec，并发1000运行30秒后产生的TCP连接100245个，0 failed.
 
 ## 实现细节
 - [基于C++11实现的阻塞队列(BlockQueue)](https://blog.csdn.net/weixin_50437588/article/details/128434180?spm=1001.2014.3001.5502)
