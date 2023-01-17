@@ -125,25 +125,25 @@ void WebServer::dealListen()
     }
 }
  
- void WebServer::dealRead(HttpConn* client)
+ void WebServer::dealRead(HttpConn_ptr client)
  {
     flushTime(client);
     threadPool_p->addTask(std::bind(&WebServer::readFrom,this,client));
  }
  
-void WebServer::dealWrite(HttpConn* client)
+void WebServer::dealWrite(HttpConn_ptr client)
 {
     flushTime(client);
     threadPool_p->addTask(std::bind(&WebServer::writeTo,this,client));
 }
  
-void WebServer::closeConn(HttpConn* client)
+void WebServer::closeConn(HttpConn_ptr client)
 {
     epoller_p->delFd(client->getFd());
     client->closeConn();
 }
  
-void WebServer::flushTime(HttpConn* client)
+void WebServer::flushTime(HttpConn_ptr client)
 {
     if(timeOutMs>0)
     {
@@ -153,7 +153,7 @@ void WebServer::flushTime(HttpConn* client)
  
 void WebServer::addClient(int connfd,const sockaddr_in& addr)
 {
-    users[connfd]=new HttpConn();
+    users[connfd]=std::make_shared<HttpConn>();
     users[connfd]->init(connfd,addr);
     if(timeOutMs>0)
     {
@@ -163,7 +163,7 @@ void WebServer::addClient(int connfd,const sockaddr_in& addr)
     setFdNonblock(connfd);
 }
  
-void WebServer::readFrom(HttpConn* client)
+void WebServer::readFrom(HttpConn_ptr client)
 {
     int readErrno=0;
     int ret=client->read(&readErrno);
@@ -175,7 +175,7 @@ void WebServer::readFrom(HttpConn* client)
     process(client);
 }
  
-void WebServer::writeTo(HttpConn* client)
+void WebServer::writeTo(HttpConn_ptr client)
 {
     int writeErrno=0;
     int ret=client->write(&writeErrno);
@@ -195,7 +195,7 @@ void WebServer::writeTo(HttpConn* client)
     closeConn(client);
 }
  
-void WebServer::process(HttpConn* client)
+void WebServer::process(HttpConn_ptr client)
 {
     if(client->process()) 
     {
