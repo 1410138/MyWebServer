@@ -1,18 +1,18 @@
 #include "heaptimer.h"
-
+ 
 void HeapTimer::swim(size_t i)//上浮
 {
 	assert(i>=0&&i<heap.size());
     while (i > 0)
     {
         size_t parent = (i - 1) / 2;
-        if (heap[i] < heap[parent])
+        if (heap[i] >= heap[parent])
             break;
         swapNode(i, parent);
         i = parent;
     }
 }
-
+ 
 void HeapTimer::swapNode(size_t i, size_t j)
 {
     assert(i >= 0 && i < heap.size());
@@ -21,7 +21,7 @@ void HeapTimer::swapNode(size_t i, size_t j)
     ref[heap[i].id] = i;
     ref[heap[j].id] = j;
 }
-
+ 
 bool HeapTimer::sink(size_t index,size_t n)//下沉
 {
     assert(index >= 0 && index < heap.size());
@@ -32,18 +32,18 @@ bool HeapTimer::sink(size_t index,size_t n)//下沉
         size_t left = i * 2 + 1;
         size_t right = i * 2 + 2;
         size_t older = left;
-        if (right<n && heap[older]<heap[right])
+        if (right<n && heap[older]>heap[right])
         {
             older = right;
         }
-        if (heap[older]<heap[i])
+        if (heap[older]>=heap[i])
             break;
         swapNode(i, older);
         i = older;
     }
     return i > index;
 }
-
+ 
 void HeapTimer::add(int id, int timeout, const TimeoutCallBack& func)//添加新的时间节点
 {
     assert(id >= 0);
@@ -66,7 +66,7 @@ void HeapTimer::add(int id, int timeout, const TimeoutCallBack& func)//添加新
         }
     }
 }
-
+ 
 void HeapTimer::del(size_t i)//删除指定位置的时间节点
 {
     assert(!heap.empty() && i >= 0 && i < heap.size());
@@ -82,7 +82,7 @@ void HeapTimer::del(size_t i)//删除指定位置的时间节点
     ref.erase(heap.back().id);
     heap.pop_back();
 }
-
+ 
 void HeapTimer::doWork(int id)//删除指定序号的时间节点
 {
     if (heap.empty() || ref.count(id) == 0)
@@ -94,14 +94,14 @@ void HeapTimer::doWork(int id)//删除指定序号的时间节点
     cur.func();
     del(i);
 }
-
+ 
 void HeapTimer::adjust(int id, int timeout)//更新阻塞时间
 {
     assert(!heap.empty() && ref.count(id) > 0);
     heap[ref[id]].expires = Clock::now() + MS(timeout);
     sink(ref[id], heap.size());
 }
-
+ 
 void HeapTimer::tick()//清除超时节点
 {
     if (heap.empty())
@@ -119,19 +119,19 @@ void HeapTimer::tick()//清除超时节点
         pop();
     }
 }
-
+ 
 void HeapTimer::pop()//删除堆顶节点
 {
     assert(!heap.empty());
     del(0);
 }
-
+ 
 void HeapTimer::clear()
 {
     ref.clear();
     heap.clear();
 }
-
+ 
 int HeapTimer::getNextTick()//得到堆顶节点剩余的阻塞时间（心搏函数）
 {
     tick();
