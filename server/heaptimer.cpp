@@ -6,7 +6,7 @@ void HeapTimer::swim(size_t i)//上浮
     while (i > 0)
     {
         size_t parent = (i - 1) / 2;
-        if (heap[i] >= heap[parent])
+        if (heap[parent] < heap[i])
             break;
         swapNode(i, parent);
         i = parent;
@@ -32,11 +32,11 @@ bool HeapTimer::sink(size_t index,size_t n)//下沉
         size_t left = i * 2 + 1;
         size_t right = i * 2 + 2;
         size_t older = left;
-        if (right<n && heap[older]>heap[right])
+        if (right<n && heap[right]<heap[older])
         {
             older = right;
         }
-        if (heap[older]>=heap[i])
+        if (heap[i]<heap[older])
             break;
         swapNode(i, older);
         i = older;
